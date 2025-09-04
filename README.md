@@ -33,6 +33,7 @@ pip install -r requirements.txt
 # 3) Create your environment file
 cp .env.example .env
 # open .env and fill placeholders
+```
 
 ## Test run / smoke test
 
