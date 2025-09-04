@@ -87,7 +87,9 @@ If you get passages but they look like ar5iv UI (e.g., “View PDF”, “Submis
 ### C. End-to-end test (LLM Required)
 Calls the FastAPI endpoint that performs retrieval → claim extraction (LLM) → grounded answer composition (LLM).
 a. Start the API
+```
   uvicorn server:app --reload
+```
 b. In another terminal, POST a question:
 ```
   curl -sS -X POST http://127.0.0.1:8000/ask \
