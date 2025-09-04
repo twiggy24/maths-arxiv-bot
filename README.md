@@ -51,18 +51,21 @@ Open one terminal with Qdrant running (see above), then in another terminal:
 ```bash
 # from repo root, with .venv active
 python -c 'import ingest_math; ingest_math.run(max_results=5)'
+```
 
 You should see logs like:
+```
 Indexed 2508.21xxxv1 with 123 chunks
 Indexed 2508.20xxxv1 with 98 chunks
 ...
+```
 
-1) Retrieval-only sanity check:
+### B. Retrieval-only sanity check:
 This is to verify that;
 1. The ONNX embedder runs locally,
 2. The query is embedded,
 3. Qdrant returns passage payloads.
-
+```
 python - <<'PY'
 import asyncio
 from retrieval import retrieve_passages
@@ -78,18 +81,22 @@ async def main():
 
 asyncio.run(main())
 PY
+```
 If you get passages but they look like ar5iv UI (e.g., “View PDF”, “Submission history”), that’s expected for now—see Troubleshooting on filtering junk in ingest_math.py
 
-2) End-to-end test (LLM Required)
+### C. End-to-end test (LLM Required)
 Calls the FastAPI endpoint that performs retrieval → claim extraction (LLM) → grounded answer composition (LLM).
 a. Start the API
   uvicorn server:app --reload
 b. In another terminal, POST a question:
+```
   curl -sS -X POST http://127.0.0.1:8000/ask \
   -H "Content-Type: application/json" \
   -d '{"question":"Explain the relation between the Picard group and the Néron–Severi group."}' \
   | python -m json.tool
+```
 c. You should see a JSON response of the form:
+```
   {
   "answer": "Grounded statements related to ... [arXiv:..., Section] ...",
   "claims": [
@@ -102,6 +109,7 @@ c. You should see a JSON response of the form:
   ],
   "followups": []
  }
+```
 If you get insufficient_quota or auth errors here, the embeddings still work (ONNX is local) amd the LLM just requires a valid OPENAI_API_KEY in .env
 
 
