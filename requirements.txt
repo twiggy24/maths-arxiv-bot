@@ -1,0 +1,12 @@
+qdrant-client
+fastapi
+uvicorn
+pydantic
+python-dotenv
+beautifulsoup4
+trafilatura
+requests
+lxml
+httpx
+pydantic-settings
+openai
